@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+    <style>
+        /* Button styles */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            background-color: rgb(83, 216, 76);
+            color: #000;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #5ad46c;
+        }
+
+        /* Form container styles */
+        #updateForm {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f2f2f2;
+            /* Added background color for the form */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 7px;
+            border: 1px solid #ccc;
+        }
+
+        small {
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* You can add more styles as needed */
+    </style>
+</head>
+<form id="updateForm" action="/update/<%= user._id %>" method="POST">
+    <input type="hidden" name="_method" value="PUT">
+    <h1>Edit User</h1>
+    <label for="Name">Name</label><input type="text" name="name" id="name" value="<%= user.name %>">
+    <small id="nameError" style="color: red;"></small>
+    <label for="Email">Email</label><input type="email" name="email" id="email" value="<%= user.email %>">
+    <small id="emailError" style="color: red;"></small>
+    <label for="Password">Password</label><input type="password" name="password" id="password"
+        value="<%= user.password %>">
+    <small id="passError" style="color: red;"></small>
+    <button class="btn btn-primary" type="submit" id="submit">Update</button>
+    <a href="/dash"><button class="btn btn-primary" type="button">Cancel</button></a>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitButton = document.querySelector("#submit");
+
+        submitButton.addEventListener('click', (event) => {
+            let name = document.querySelector("#name").value;
+            let email = document.querySelector("#email").value;
+            let password = document.querySelector("#password").value;
+
+            let isnameValid = /^[a-zA-Z\s]{3,}$/.test(name);
+            let isemailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            let isPasswordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password);
+
+            if (!isnameValid) {
+                document.querySelector("#nameError").textContent = "Minimum 3 Letters Required / Avoid Special Characters";
+            } else {
+                document.querySelector("#nameError").textContent = "";
+            }
+
+            if (!isemailValid) {
+                document.querySelector("#emailError").textContent = "Invalid Email Format";
+            } else {
+                document.querySelector("#emailError").textContent = "";
+            }
+
+            if (!isPasswordValid) {
+                document.querySelector("#passError").textContent = "Password must be at least 8 characters, and contain at least one uppercase letter, one lowercase letter, and one digit.";
+            } else {
+                document.querySelector("#passError").textContent = "";
+            }
+
+            if (!isnameValid || !isemailValid || !isPasswordValid) {
+                event.preventDefault(); // Prevent form submission
+            }
+
+            const userConfirmed = window.confirm('Are you sure you want to update?');
+
+            // If user cancels the update, prevent form submission
+            if (!userConfirmed) {
+                event.preventDefault();
+            }
+
+        });
+    });
+</script>
+</body>
+
+</html>

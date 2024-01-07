@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nova Square', sans-serif;
+            margin: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        section {
+            margin: 20px;
+        }
+
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: teal;
+            font-size: 16px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        } */
+
+        button:hover {
+            background-color: rgb(1, 46, 46);
+        }
+
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            margin-left: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            background-color: teal;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+    </header>
+
+    <section>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th colspan="2" style="text-align: center;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (user && user.name) { %> <!-- Check if user exists and has a name -->
+                    <tr>
+                        <td><%= user.name %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.password %></td>
+                        <td style="display: none;"><%= user._id %></td>
+                        <td>
+                            <button onclick="window.location.href='/edit/<%= user._id %>'" id="edit">Edit</button>
+                            <button id="delete" onclick="deleteall('<%= user._id %>')">Delete</button>
+                        </td>
+                    </tr>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5" style="text-align:center;">No user data available.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <!-- <a href="" onclick="confirmLogout();"><button class="btn btn-primary" type="button">Logout</button></a> -->
+        <a href="#" onclick="confirmLogout();"><button class="btn btn-primary" type="button">Logout</button></a>
+
+
+    </section>
+
+    <!-- <button class="but" id="submit" onclick="home()"><b>Home</b></button> -->
+
+    <script>
+        function deleteall(all) {
+            // Show confirmation dialog
+            const userConfirmed = window.confirm('Are you sure you want to delete?');
+
+            if (!userConfirmed) {
+                return;  // Exit the function if user didn't confirm
+            }
+
+            fetch(`/deleteall/${all}`, {
+                method: 'DELETE',
+                // body: JSON.stringify(item),
+            }).then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error('Error deleting user');
+                }
+            })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        function confirmLogout() {
+            // Show confirmation dialog
+            const userConfirmed = window.confirm('Are you sure you want to logout?');
+
+            if (userConfirmed) {
+                // Redirect to the logout URL
+                window.location.href = "/logout";
+            }
+        }
+    </script>
+</body>
+
+</html>

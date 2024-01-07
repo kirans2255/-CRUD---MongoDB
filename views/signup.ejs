@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@1,200&family=Nova+Square&family=Open+Sans:ital,wght@0,300;1,500&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: rgb(255, 255, 255);
+            background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(140, 188, 245, 1) 100%);
+            height: 500px;
+        }
+
+
+
+        section {
+            margin-left: 300px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-evenly;
+            margin: 20px;
+        }
+
+        .form {
+            width: 400px;
+            padding: 40px;
+            background-color: skyblue;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-top: 150px;
+        }
+
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border-radius: 7px;
+            border-style: none;
+        }
+
+        button {
+            height: 40px;
+            width: 130px;
+            font-size: 18px;
+            margin-left: 600px;
+            background-color: rgb(83, 216, 76);
+            border-color: white;
+            font-family: 'Open Sans', sans-serif;
+            color: rgb(0, 0, 0);
+
+        }
+
+        #submit {
+            height: 40px;
+            width: 130px;
+            font-size: 18px;
+            margin-left: 100px;
+            background-color: rgb(83, 216, 76);
+            border-color: white;
+            font-family: 'Open Sans', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+
+    </header>
+
+    <section>
+        <form action="/submit" method="POST" class="form" id="fi-name">
+
+            <h2>Name</h2>
+            <input type="text" placeholder="Enter Name" id="name" name="signupFullName">
+            <small id="nameError" style="color: red;"></small>
+
+            <h2>E-mail</h2>
+            <input type="email" placeholder="Enter Email" id="email" name="signupEmail">
+            <small id="emailError" style="color: red;"></small>
+
+            <h2>Password</h2>
+            <input type="password" placeholder="Enter Password" id="password" name="signupPassword">
+            <small id="passError" style="color: red;"></small>
+
+            <% if (error) { %>
+                <div style="color: red; margin-bottom: 10px;">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <button type="submit" id="submit">Signup</button><br>
+
+        </form>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const submitButton = document.querySelector("#submit");
+
+            submitButton.addEventListener('click', (event) => {
+                let name = document.querySelector("#name").value;
+                let email = document.querySelector("#email").value;
+                let password = document.querySelector("#password").value;
+
+                let isnameValid = /^[a-zA-Z\s]{3,}$/.test(name);
+                let isemailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                let isPasswordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password);
+
+                if (!isnameValid) {
+                    document.querySelector("#nameError").textContent = "Minimum 3 Letters Required / Avoid Special Characters";
+                } else {
+                    document.querySelector("#nameError").textContent = "";
+                }
+
+                if (!isemailValid) {
+                    document.querySelector("#emailError").textContent = "Invalid Email Format";
+                } else {
+                    document.querySelector("#emailError").textContent = "";
+                }
+
+                if (!isPasswordValid) {
+                    document.querySelector("#passError").textContent = "Password must be at least 8 characters, and contain at least one uppercase letter, one lowercase letter, and one digit.";
+                } else {
+                    document.querySelector("#passError").textContent = "";
+                }
+
+                if (isnameValid && isemailValid && isPasswordValid) {
+                    // Redirect to the root path if all validations pass
+                    window.location.href = "/";
+                } else {
+                    event.preventDefault(); // Prevent form submission if there are validation errors
+                }
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

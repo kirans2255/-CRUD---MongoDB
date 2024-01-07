@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@1,200&family=Nova+Square&family=Open+Sans:ital,wght@0,300;1,500&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: rgb(255, 255, 255);
+            background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(140, 188, 245, 1) 100%);
+            height: 500px;
+        }
+
+        /* h1 {
+            text-align: center;
+            color: darkslategray;
+            font-family: 'Nova Square', sans-serif;
+        }
+
+        .heade {
+            color: darkslategray;
+            font-size: 60px;
+            text-align: center;
+            font-family: 'Nova Square', sans-serif;
+            margin-top: 50px;
+            margin-left: -50px;
+        } */
+
+        /* .img {
+            height: 180px;
+            width: 200px;
+            margin-left: 650px;
+            margin-top: -120px;
+        } */
+
+        section {
+            margin-left: 300px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-evenly;
+            margin: 20px;
+        }
+
+        .form {
+            width: 400px;
+            padding: 40px;
+            background-color: skyblue;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-top: 200px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border-radius: 7px;
+            border-style: none;
+        }
+
+        button {
+            height: 40px;
+            width: 130px;
+            font-size: 18px;
+            margin-left: 100px;
+            background-color: rgb(83, 216, 76);
+            border-color: white;
+            font-family: 'Open Sans', sans-serif;
+            color: rgb(0, 0, 0);
+
+        }
+
+        #submit {
+            height: 40px;
+            width: 130px;
+            font-size: 18px;
+            margin-left: 100px;
+            background-color: rgb(83, 216, 76);
+            border-color: white;
+            font-family: 'Open Sans', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+            /* Add this line to make the text bold */
+        }
+
+        #sn {
+            font-size: 23px;
+        }
+
+        #sm {
+            font-size: 22px;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+
+    </header>
+
+    <section>
+        <form action="/login" method="POST" class="form" id="fi-name">
+
+            <h2>E-mail</h2>
+            <input type="email" placeholder="Enter Email" id="email" name="signInEmail">
+            <small id="emailError" style="color: red;"></small>
+
+            <h2>Password</h2>
+            <input type="password" placeholder="Enter Password" id="password" name="signInPassword"><br>
+            <small id="passError" style="color: red;"></small>
+
+            <% if (error) { %>
+                <div style="color: red; margin-bottom: 10px;"><%= error %></div>
+            <% } %><br>
+
+            <button type="submit" id="submit">Log in</button><br><br>
+            <small id="sm"><b>Dont have an Account?</b></small>
+            <a href="/signin" id="sn" onclick="signin()">Sign Up</a>
+
+
+            <small id="error" style="color: red;"></small>
+        </form>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const submitButton = document.querySelector("#submit");
+
+            submitButton.addEventListener('click', (event) => {
+                let email = document.querySelector("#email").value;
+                let password = document.querySelector("#password").value;
+
+                let isemailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                let ispasswordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password);
+
+                if (!isemailValid) {
+                    document.querySelector("#emailError").innerHTML = "Invalid Format";
+                    event.preventDefault();  // Prevent form submission
+                } else {
+                    document.querySelector("#emailError").innerHTML = "";
+                }
+
+                if (!ispasswordValid) {
+                    document.querySelector("#passError").innerHTML = "Password must be at least 8 characters, and contain at least one uppercase letter, one lowercase letter, and one digit.";
+                    event.preventDefault();  // Prevent form submission
+                } else {
+                    document.querySelector("#passError").innerHTML = "";
+                }
+                const errorMessage = document.querySelector("#error");
+            });
+        });
+
+        function signin() {
+            window.location.href = '/signin';
+        }
+    </script>
+</body>
+
+</html>
